@@ -1,0 +1,1 @@
+case class City(recordNumber: Int, zipcode: String, zipCodeType: String, city: String, state: String, locationType: String, lat: Double, longitude: Double, xAxis: Double, yAxis: Double, zAxis: Double, worldRegion: String, country: String, locationText: String, location: String, decommisioned: Boolean)
