@@ -4,6 +4,9 @@ import org.apache.spark.sql.functions.{avg, desc, max}
 import java.util.Properties
 
 object Main {
+
+  private final val PEOPLE_CSV_PATH = "W:\\HTWG_Master\\Seminar\\data\\people.csv"
+  private final val PEOPLE_JSON_PATH = "W:\\HTWG_Master\\Seminar\\data\\people.json"
   def main(args: Array[String]): Unit = {
 
     val spark = SparkSession.builder
@@ -11,9 +14,9 @@ object Main {
       .config("spark.master", "local")
       .getOrCreate()
 
-//    genericLoad(spark)
+    genericLoad(spark)
     jsonExample(spark)
-//    jsonSQLExample(spark)
+    jsonSQLExample(spark)
 
   }
 
@@ -22,7 +25,7 @@ object Main {
       .option("sep", ",")
       .option("inferSchema", "true")
       .option("header", "true")
-      .load("W:\\HTWG_Master\\Seminar\\data\\people.csv")
+      .load(PEOPLE_CSV_PATH)
 
     peopleDFCsv.show()
 
@@ -34,7 +37,7 @@ object Main {
   }
 
   def jsonExample(spark: SparkSession): Unit = {
-    val jsonDF = spark.read.json("W:\\HTWG_Master\\Seminar\\data\\people.json")
+    val jsonDF = spark.read.json(PEOPLE_JSON_PATH)
     jsonDF.show()
 
     val groupedData = jsonDF.groupBy("name").agg(avg("age"))
@@ -64,7 +67,7 @@ object Main {
   }
 
   def jsonSQLExample(spark: SparkSession): Unit = {
-    val df = spark.read.json("W:\\HTWG_Master\\Seminar\\data\\people.json")
+    val df = spark.read.json(PEOPLE_JSON_PATH)
     df.createOrReplaceTempView("people")
     val sqlDF = spark.sql("SELECT name, age FROM people")
     sqlDF.show()
